@@ -1,11 +1,10 @@
 # webapp/core/storage_backends.py
 from django.conf import settings
 from storages.backends.s3boto3 import S3Boto3Storage
-from tenant_schemas.storage import TenantStorageMixin
 from django.contrib.auth import get_user_model
 
 
-class StaticStorage(S3Boto3Storage, TenantStorageMixin):
+class StaticStorage(S3Boto3Storage):
     location = settings.AWS_STATIC_LOCATION
     # location = 'static'
     default_acl = 'public-read'
