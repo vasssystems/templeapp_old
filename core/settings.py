@@ -27,8 +27,6 @@ SECRET_KEY = 'django-insecure-j^$-ro^m^lh(1eyhtef0%g#2hzm@*7l3(90ut6+sx(b8zjrq8l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-
 ROOT_URLCONF = 'core.urls'
 
 # Application definition
@@ -54,7 +52,6 @@ INSTALLED_APPS = [
     'cms'
 ]
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -64,7 +61,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 
 AUTH_USER_MODEL = 'user.CustomUser'
 
@@ -271,7 +267,6 @@ LOGGING = {
     }
 }
 
-
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
         'Bearer': {
@@ -292,3 +287,37 @@ SWAGGER_SETTINGS = {
     'DEFAULT_MODEL_RENDERING': 'model',
     'DISPLAY_OPERATION_ID': False
 }
+
+ALLOWED_HOSTS = ['*']
+
+# Additional settings on production to avoid CSRF forbidden issues on live with HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = ('https://*.templeaddress.com', 'http://*.templeaddress.com', 'https://templeaddress.com',
+                        'http://*.vercel.app', 'https://*.vercel.app', 'http://localhost:3000', 'https://*.now.sh')
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000', 'http://*.localhost', 'http://*.vercel.app', 'http://*.templeaddress.com',
+    'https://*.templeaddress.com', 'https://*.vercel.app', 'https://*.now.sh')
+
+MAX_UPLOAD_SIZE = "5242880"
+FILE_UPLOAD_MAX_MEMORY_SIZE = 9621440
+X_FRAME_OPTIONS = 'ALLOWALL'
+XS_SHARING_ALLOWED_METHODS = ['POST', 'GET']
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT", ]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
