@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save, post_save
 from utils.common.generators import generate_random_code
 from utils.common.generators import ChoiceMenu
+from utils.base_model import CommonFields
 
 User = get_user_model()
 
@@ -36,34 +37,10 @@ def default_blank_fields():
 
 
 # Create your models here.
-class Payments(models.Model):
-    transaction_id = models.CharField(max_length=50)
-    package_id = models.CharField(null=True, max_length=80, choices=ChoiceMenu.PACKAGES)
-    code = models.CharField(null=True, blank=True, unique=True, max_length=80)
-    created_on = models.DateField(auto_now_add=True, null=True)
-    payment_date = models.DateField(null=True, blank=True)
-    expiry_date = models.DateField(null=True, blank=True)
-    amount = models.PositiveIntegerField(blank=True, default=0)
-    description = models.TextField(null=True, blank=True)
-
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)  # Common UUID field for all models with autogenerate
-    status = models.BooleanField(default=True)  # Common Status field for check active or disabled status of object
-    is_deleted = models.BooleanField(default=False)  # Soft delete field
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now_add=True, null=True)
-    created_by = models.CharField(max_length=40, null=True, blank=True)  # Store created user UUID
-    updated_by = models.CharField(max_length=40, null=True, blank=True)  # Store Updated user UUID
-
-    def __str__(self):
-        return f"{self.code}"
-
-
-class GeneralSettings(models.Model):
+class GeneralSettings(CommonFields):
     id_no = models.IntegerField(null=True, unique=True, default=1)
     title = models.CharField(max_length=200, null=True, blank=True, unique=True)
     tags = models.CharField(max_length=20, null=True, unique=True, blank=True)
-    input_version = models.CharField(max_length=20, null=True, unique=True, blank=True, choices=ChoiceMenu.VERSION)
-    report_version = models.CharField(max_length=20, null=True, unique=True, blank=True, choices=ChoiceMenu.VERSION)
     description = models.TextField(null=True, blank=True)
     allow_signup = models.BooleanField(default=True, blank=True)
     allow_data_entry = models.BooleanField(default=True, blank=True)
@@ -80,14 +57,6 @@ class GeneralSettings(models.Model):
     admin_address = models.CharField(null=True, blank=True, max_length=225)
     jdoc = models.JSONField(default=default_blank_fields, null=True, blank=True)
 
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)  # Common UUID field for all models with autogenerate
-    status = models.BooleanField(default=True)  # Common Status field for check active or disabled status of object
-    is_deleted = models.BooleanField(default=False)  # Soft delete field
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now_add=True, null=True)
-    created_by = models.CharField(max_length=40, null=True, blank=True)  # Store created user UUID
-    updated_by = models.CharField(max_length=40, null=True, blank=True)  # Store Updated user UUID
-
     def __str__(self):
         return str(self.id_no)
 
@@ -102,24 +71,16 @@ class GeneralSettings(models.Model):
 
 
 # Special Model, Only Technical admin or Service Provider can Update
-class AdminConfig(models.Model):
+class AdminConfig(CommonFields):
     code = models.CharField(null=True, blank=True, unique=True, max_length=80)
     package = models.CharField(null=True, max_length=80, choices=ChoiceMenu.PACKAGES)
     portal_type = models.CharField(null=True, unique=True, max_length=80, choices=ChoiceMenu.PORTAL_TYPE)
     user_limit = models.IntegerField(null=True, blank=True)
-    criterion_limit = models.IntegerField(null=True, blank=True)
+    page_limit = models.IntegerField(null=True, blank=True)
     data_limit = models.IntegerField(null=True, blank=True)
     file_size_limit = models.IntegerField(null=True, blank=True)
     other_limit = models.IntegerField(null=True, blank=True)
     admin_pin = models.IntegerField(null=True, blank=True)
-
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)  # Common UUID field for all models with autogenerate
-    status = models.BooleanField(default=True)  # Common Status field for check active or disabled status of object
-    is_deleted = models.BooleanField(default=False)  # Soft delete field
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now_add=True, null=True)
-    created_by = models.CharField(max_length=40, null=True, blank=True)  # Store created user UUID
-    updated_by = models.CharField(max_length=40, null=True, blank=True)  # Store Updated user UUID
 
     def __str__(self):
         return f"{self.code}"
@@ -134,7 +95,7 @@ class AdminConfig(models.Model):
         super(AdminConfig, self).save(*args, **kwargs)
 
 
-class Logos(models.Model):
+class Logos(CommonFields):
     code = models.CharField(null=True, blank=True, unique=True, max_length=80)
     id_no = models.IntegerField(null=True, unique=True)
     logo = models.ImageField(upload_to=admin_file_upload_directory_path, null=True, blank=True)
@@ -142,45 +103,19 @@ class Logos(models.Model):
     image = models.ImageField(upload_to=admin_file_upload_directory_path, null=True, blank=True)
     files = models.FileField(upload_to=admin_file_upload_directory_path, null=True, blank=True)
 
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)  # Common UUID field for all models with autogenerate
-    status = models.BooleanField(default=True)  # Common Status field for check active or disabled status of object
-    is_deleted = models.BooleanField(default=False)  # Soft delete field
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now_add=True, null=True)
-    created_by = models.CharField(max_length=40, null=True, blank=True)  # Store created user UUID
-    updated_by = models.CharField(max_length=40, null=True, blank=True)  # Store Updated user UUID
-
     def __str__(self):
         return str(self.id_no)
 
 
-class UserAgreements(models.Model):
+class UserAgreements(CommonFields):
     code = models.CharField(null=True, blank=True, unique=True, max_length=80)
     id_no = models.IntegerField(null=True, unique=True)
     title = models.CharField(max_length=20, null=True, blank=True)
     type = models.CharField(max_length=20, null=True, blank=True, choices=ChoiceMenu.AGREEMENT, default="TOS")
     description = models.TextField(null=True, blank=True)
 
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)  # Common UUID field for all models with autogenerate
-    status = models.BooleanField(default=True)  # Common Status field for check active or disabled status of object
-    is_deleted = models.BooleanField(default=False)  # Soft delete field
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now_add=True, null=True)
-    created_by = models.CharField(max_length=40, null=True, blank=True)  # Store created user UUID
-    updated_by = models.CharField(max_length=40, null=True, blank=True)  # Store Updated user UUID
-
     def __str__(self):
         return str(self.id_no)
-
-
-@receiver(pre_save, sender=Payments)
-def payments_code_gen(sender, instance, **kwargs):
-    try:
-        if not instance.code:
-            instance.code = generate_random_code()
-    except:
-        if not instance.code:
-            instance.code = "ERROR_CODE" + str(time.time_ns())
 
 
 @receiver(pre_save, sender=AdminConfig)

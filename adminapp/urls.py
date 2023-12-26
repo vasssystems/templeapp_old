@@ -12,8 +12,6 @@ urlpatterns = [
     path('adminconfig/<uuid:uuid>/', views.AdminConfigDetailsAPIView.as_view(), name='admin-config-detail'),
     path('logos/', views.LogosListCreateAPIView.as_view(), name='logos'),
     path('logos/<uuid:uuid>/', views.LogosDetailsAPIView.as_view(), name='logos-detail'),
-    path('payments/', views.PaymentsListCreateAPIView.as_view(), name='payments'),
-    path('payments/<uuid:uuid>/', views.PaymentsDetailsAPIView.as_view(), name='payments-detail'),
     path('generalsettings/', views.GeneralSettingsListCreateAPIView.as_view(), name='general-settings'),
     path('generalsettings/<uuid:uuid>/', views.GeneralSettingsDetailsAPIView.as_view(), name='general-settings-detail'),
 ]

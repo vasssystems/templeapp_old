@@ -1,7 +1,7 @@
 # webapp/features/serializers.py
 from rest_framework import serializers
 from .models import (
-    Departments, Clubs, Batch, Faq, NoticeBoard)
+    Departments, Faq, NoticeBoard)
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
@@ -10,37 +10,6 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Departments
-        fields = '__all__'
-
-    def create(self, validated_data):
-        validated_data['created_by'] = str(self.context['request'].user.uuid)
-        validated_data['updated_by'] = str(self.context['request'].user.uuid)
-        return super().create(validated_data)
-
-    def perform_update(self, instance, validated_data):
-        validated_data['updated_by'] = str(self.context['request'].user.uuid)
-        return super().perform_update(instance, validated_data)
-
-
-class ClubsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Clubs
-        fields = '__all__'
-
-    def create(self, validated_data):
-        validated_data['created_by'] = str(self.context['request'].user.uuid)
-        validated_data['updated_by'] = str(self.context['request'].user.uuid)
-        return super().create(validated_data)
-
-    def perform_update(self, instance, validated_data):
-        validated_data['updated_by'] = str(self.context['request'].user.uuid)
-        return super().perform_update(instance, validated_data)
-
-
-
-class BatchSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Batch
         fields = '__all__'
 
     def create(self, validated_data):

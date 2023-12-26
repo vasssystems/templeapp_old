@@ -46,26 +46,6 @@ class Departments(CommonFields):
         return str(self.name)
 
 
-class Clubs(CommonFields):
-    name = models.CharField(max_length=50, unique=True)
-    user = models.ManyToManyField(User, related_name="club_user", blank=True)
-    code = models.CharField(max_length=10, null=True, blank=True, unique=True)
-    description = models.TextField(max_length=300, null=True, blank=True)
-    established_at = models.DateField(null=True, blank=True)
-
-    def __str__(self):
-        return str(self.name)
-
-
-class Batch(CommonFields):
-    name = models.CharField(max_length=12, null=True)
-    batch_no = models.IntegerField(unique=True, blank=True, )
-    established_at = models.DateField(null=True, blank=True)
-
-    def __str__(self):
-        return str(self.name)
-
-
 class Faq(CommonFields):
     faq_no = models.IntegerField(null=True, unique=True)
     question = models.CharField(max_length=225, null=True, blank=True, unique=True)
