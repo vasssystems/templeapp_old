@@ -27,10 +27,10 @@ urlpatterns = [
     # path('accounts/', include('django.contrib.auth.urls')),
     path('api/v1/user/', include("user.urls", namespace='user')),
     path('api/v1/utils/', include("utils.urls", namespace='utils')),
-    path('api/v1/features/', include("features.urls", namespace='features')),
-    path('api/v1/adminapp/', include("adminapp.urls", namespace='adminapp')),
+    # path('api/v1/features/', include("features.urls", namespace='features')),
+    # path('api/v1/adminapp/', include("adminapp.urls", namespace='adminapp')),
     path('api/v1/cms/', include("cms.urls", namespace='cms')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    # path('', include("utils.urls", namespace='utils')),
+    path('', include("utils.urls", namespace='utils-common')),
 ]

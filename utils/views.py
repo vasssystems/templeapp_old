@@ -24,14 +24,15 @@ def custom_404(request, exception):
     return JsonResponse(response, status=404)
 
 
-def index(request):
-    response = {
-        'success': True,
-        'message': 'Welcome to API index',
-        'status': 200,
-        'data': {}
-    }
-    return JsonResponse(response, status=200)
+class IndexAPIView(APIView):
+    def get(self, request):
+        response = {
+            'success': True,
+            'message': 'Welcome to API index',
+            'status': 200,
+            'data': {"project": "TempleAddress.com"}
+        }
+        return Response(response, status=200)
 
 
 def custom_exception_handler(exc, context):
