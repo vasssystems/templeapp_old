@@ -81,13 +81,13 @@ class UserLoginView(generics.GenericAPIView):
             user = authenticate(username=username, password=password)
 
             if user:
-                refresh = RefreshToken.for_user(user)
+                user_token = RefreshToken.for_user(user)
                 update_last_login(None, user)
 
                 user_data = {'id': user.id, 'uuid': str(user.uuid),
                              'username': user.username, 'scope': user.user_scope}
-                res_data = {'success': True, 'message': 'User logged Successfully',
-                            'data': user_data, 'token': str(refresh.access_token)}
+                res_data = {'success': True, 'message': 'User logged Successfully', 'data': user_data,
+                            'access_token': str(user_token.access_token), 'refresh_token': str(user_token)}
                 return Response(res_data, status=status.HTTP_200_OK)
             else:
                 err_data = "Invalid Username or Password"
