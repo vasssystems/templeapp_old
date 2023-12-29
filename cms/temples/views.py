@@ -197,6 +197,9 @@ class ServiceDetailsAPIView(CustomResponseMixin, RetrieveUpdateDestroyAPIView):
 
             queryset = self.get_queryset()
             instance = get_object_or_404(queryset, Q(**{lookup_field: lookup_value}))
+            # instance = self.get_object()
+            serializer = GetServiceDetailedSerializer(instance)
+            return self.success_response("Retrieved successfully", serializer.data)
         except Exception as e:
             return self.bad_request_response("Something went wrong !", err_msg(e))
 
