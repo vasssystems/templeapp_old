@@ -1,6 +1,7 @@
 # webapp/user/views.py
 import json
 import logging
+from rest_framework.exceptions import ValidationError
 from rest_framework import generics, status, permissions
 from django.db.models import Sum, Q
 from rest_framework.views import APIView
@@ -36,17 +37,18 @@ class UserRegistrationView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         try:
             serializer = self.get_serializer(data=request.data)
-            if serializer.is_valid(raise_exception=True):
+            if serializer.is_valid():
                 user = serializer.save()
                 user.save()
                 # Success part of the code # Single line dictionary for response with info logs
                 res_data = {"success": True, "message": "Registration Successful, Please Login",
                             "data": UserProfileSerializer(user, context=self.get_serializer_context()).data, }
                 logger.info(f"Successfully created user {user}")
+
                 return Response(res_data, status=status.HTTP_201_CREATED)
             else:
                 # Error handling part of the code # Single line dictionary for response with error logs
-                err_data = str(serializer.errors)
+                err_data = self.get_error_messages(serializer.errors)
                 res_data = {"success": False, "message": "Something went wrong", "data": {"error": err_data}}
                 logger.warning(err_data)
                 return Response(res_data, status=status.HTTP_400_BAD_REQUEST)
@@ -54,8 +56,20 @@ class UserRegistrationView(generics.GenericAPIView):
         except Exception as ex:
             # Exception handling part of the code # Single line dictionary for response with error logs
             logger.error(ex)
-            res_data = {"success": False, "message": " Something went wrong !", "data": {"error": str(ex)}, }
+            res_data = {"success": False, "message": " Something went wrong !",
+                        "data": {"error": self.get_error_messages(ex)}}
             return Response(res_data, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_error_messages(self, obj):
+        error_messages = {}
+        if isinstance(obj, dict):  # Check if it's a DRF Serializer error.
+            for field, errors in obj.items():
+                error_messages[field] = errors[0] if isinstance(errors, list) else errors
+
+        if hasattr(obj, 'get_codes'):  # Check if it's a DRF ValidationError
+            for field, errors in obj.get_codes().items():
+                error_messages[field] = obj.get_full_details()[field][0]['message']
+        return error_messages
 
 
 # User login view
@@ -138,6 +152,8 @@ class ChangePasswordView(APIView):
             logger.error(ex)
             res_data = {'success': False, "message": 'Some thing went wrong', 'data': err_msg(ex)}
             return Response(res_data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 
 class UserProfileView(RetrieveUpdateAPIView):

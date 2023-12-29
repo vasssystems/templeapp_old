@@ -13,14 +13,36 @@ User = get_user_model()
 common_user_id = '433714f1-0f09-4363-a51c-9d99a29d88a6'
 
 
-def err_msg(error_data):
+def err_msg(obj):
     try:
-        formatted_errors = str(error_data)
-        return formatted_errors
-    except Exception as e:
-        logger.error(e)
+        error_messages = {}
+        if isinstance(obj, dict):  # Check if it's a DRF Serializer error.
+            for field, errors in obj.items():
+                error_messages[field] = errors[0] if isinstance(errors, list) else errors
+
+        elif hasattr(obj, 'get_codes'):  # Check if it's a DRF ValidationError
+            for field, errors in obj.get_codes().items():
+                error_messages[field] = obj.get_full_details()[field][0]['message']
+        else:
+            error_messages = str(obj)
+        return error_messages
+    except Exception as ex:
+        logger.error(ex)
         return "Unknown Error"
 
+
+
+
+    def get_error_messages(self, obj):
+        error_messages = {}
+        if isinstance(obj, dict):  # Check if it's a DRF Serializer error.
+            for field, errors in obj.items():
+                error_messages[field] = errors[0] if isinstance(errors, list) else errors
+
+        if hasattr(obj, 'get_codes'):  # Check if it's a DRF ValidationError
+            for field, errors in obj.get_codes().items():
+                error_messages[field] = obj.get_full_details()[field][0]['message']
+        return error_messages
 
 def get_user_from_uuid(uuid_string):
     try:
