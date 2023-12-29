@@ -56,7 +56,7 @@ For Front End Developer :
 
 
 class TempleGallery(CommonFields):
-    name = models.CharField(max_length=120, null=True)
+    name = models.CharField(max_length=120, null=True, blank=True)
     temple_uuid = models.UUIDField(null=True, blank=True)
     image_1 = models.ImageField(null=True, blank=True, upload_to=temple_upload_directory_path)
     image_2 = models.ImageField(null=True, blank=True, upload_to=temple_upload_directory_path)
@@ -72,7 +72,7 @@ class TempleGallery(CommonFields):
 
 
 class ServiceGallery(CommonFields):
-    name = models.CharField(max_length=120, null=True)
+    name = models.CharField(max_length=120, null=True, blank=True)
     service_uuid = models.UUIDField(null=True, blank=True)
     image_1 = models.ImageField(null=True, blank=True, upload_to=service_upload_directory_path)
     image_2 = models.ImageField(null=True, blank=True, upload_to=service_upload_directory_path)

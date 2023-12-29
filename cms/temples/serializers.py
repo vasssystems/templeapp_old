@@ -170,11 +170,18 @@ class GetServiceGallerySerializer(serializers.ModelSerializer):
                   'image_6', 'image_7', 'image_8', 'name', 'created_at', 'created_by')
 
 
+class GetTempleGallerySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TempleGallery
+        fields = ('id', 'uuid', 'image_1', 'image_2', 'image_3', 'image_4', 'image_5',
+                  'image_6', 'image_7', 'image_8', 'name', 'created_at', 'created_by')
+
+
 # Custom Serializer to Show Temple with Pooja and festival details
 class GetTempleDetailedSerializer(serializers.ModelSerializer):
     pooja_details = serializers.SerializerMethodField()
     festivals = serializers.SerializerMethodField()
-    gallery = GetServiceGallerySerializer()
+    gallery = serializers.SerializerMethodField()
 
     class Meta:
         model = TempleData
@@ -183,7 +190,7 @@ class GetTempleDetailedSerializer(serializers.ModelSerializer):
                   "image", "deity", "deity_list", "landmark", "location", "town",
                   "district", "zipcode", "state", "country", "latitude", "longitude",
                   "map_url", "telephone", "mobile", "email", "website", "slug",
-                  "embedded_url","time_slot_1","time_slot_2","time_slot_3",
+                  "embedded_url", "time_slot_1", "time_slot_2", "time_slot_3",
                   "acc_number", "ifsc_code", "bank_name", "account_name", "upi_id",
                   "upi_qr", "story", "gallery", "pooja_details", "festivals")
 
@@ -195,10 +202,14 @@ class GetTempleDetailedSerializer(serializers.ModelSerializer):
         pooja_obj = Poojas.objects.filter(is_deleted=False, status=True, temple_uuid=tmp.uuid).order_by("id")
         return GetPoojaSerializer(pooja_obj, many=True).data
 
+    def get_gallery(self, tmp):
+        gallery_obj = TempleGallery.objects.filter(is_deleted=False, status=True, temple_uuid=tmp.uuid).order_by("id")
+        return GetTempleGallerySerializer(gallery_obj, many=True).data
+
 
 # Custom Serializer to Show Temple with Pooja and festival details
 class GetServiceDetailedSerializer(serializers.ModelSerializer):
-    gallery = GetServiceGallerySerializer()
+    gallery = serializers.SerializerMethodField()
 
     class Meta:
         model = ServiceData
@@ -211,3 +222,6 @@ class GetServiceDetailedSerializer(serializers.ModelSerializer):
                   "acc_number", "ifsc_code", "bank_name", "account_name", "upi_id",
                   "upi_qr", "story", "gallery", "enable_booking")
 
+    def get_gallery(self, obj):
+        gallery_obj = ServiceGallery.objects.filter(is_deleted=False, status=True, service_uuid=obj.uuid).order_by("id")
+        return GetServiceGallerySerializer(gallery_obj, many=True).data
