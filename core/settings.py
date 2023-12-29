@@ -87,6 +87,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 # Checking the default database configuration (Local or Server)
 USE_DB = config('USE_DB', default=False, cast=bool)
+USE_S3 = config('USE_S3', default=False, cast=bool)
+USE_EMAIL = config('USE_EMAIL', default=False, cast=bool)
+LIVE_MODE = config('LIVE_MODE', default=False, cast=bool)
+BASE_URL = config('BASE_URL', default="http://localhost:8000")
+APP_URL = config('APP_URL',  default="https://app.templeaddress.com")
+API_URL = config('API_URL', default="https://api.templeaddress.com")
 
 if USE_DB:
     DATABASES = {
@@ -159,7 +165,6 @@ REST_FRAMEWORK = {
     # "EXCEPTION_HANDLER": "drf_standardized_errors.handler.exception_handler"
 }
 
-USE_S3 = config('USE_S3', default=False, cast=bool)
 
 if USE_S3:
     # AWS settings
@@ -214,10 +219,7 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-# Get email backend settings
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-LIVE_MODE = True
 API_URL = "https://api.templeaddress.com"
 APP_URL = "https://app.templeaddress.com"
 
@@ -324,3 +326,22 @@ CORS_ALLOW_HEADERS = [
 ]
 
 APPEND_SLASH = True
+
+# Get email backend settings
+ANYMAIL = {
+    "MAILJET_API_KEY": config('MAILJET_API_KEY'),
+    "MAILJET_SECRET_KEY": config('MAILJET_SECRET_KEY'),
+}
+
+if USE_EMAIL:
+    DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+    SERVER_EMAIL = config('SERVER_EMAIL')
+    EMAIL_BACKEND = config('EMAIL_BACKEND')
+    MAILJET_SENDER_DOMAIN = config('MAILJET_SENDER_DOMAIN'),
+    # EMAIL_HOST = config('EMAIL_HOST')
+    # EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+    # EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+    # EMAIL_PORT = config('EMAIL_PORT')
+    # EMAIL_USE_TLS = True
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
