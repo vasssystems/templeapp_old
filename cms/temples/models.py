@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save, post_save
 from ckeditor.fields import RichTextField
 from utils.common.generators import generate_random_code, ChoiceMenu
+from utils.common.general_functions import common_user_id
 from utils.base_model import CommonFields
 import logging
 
@@ -162,6 +163,12 @@ class TempleData(CommonFields):
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
     map_url = models.URLField(null=True, blank=True)
+    embedded_url = models.TextField(null=True, blank=True)
+    # Timing & social media
+    time_slot_1 = models.CharField(max_length=225, null=True, blank=True)
+    time_slot_2 = models.CharField(max_length=225, null=True, blank=True)
+    time_slot_3 = models.CharField(max_length=225, null=True, blank=True)
+    social_media = models.JSONField(null=True, blank=True, default=default_blank_fields)
 
     # Contact details
     telephone = models.CharField(max_length=15, null=True, blank=True)
@@ -179,7 +186,8 @@ class TempleData(CommonFields):
     upi_qr = models.ImageField(upload_to=temple_upload_directory_path, null=True, blank=True)
 
     # Additional Information -  OneToOne Fields from Other Tables
-    gallery = models.OneToOneField(TempleGallery, related_name='temple', on_delete=models.SET_NULL, null=True, blank=True)
+    gallery = models.OneToOneField(TempleGallery, related_name='temple', on_delete=models.SET_NULL, null=True,
+                                   blank=True)
     story = models.CharField(max_length=180, null=True, blank=True)  # Link to Blog URL or Blog UUID
 
     def __str__(self):
@@ -205,6 +213,14 @@ class ServiceData(CommonFields):
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
     map_url = models.URLField(null=True, blank=True)
+    embedded_url = models.TextField(null=True, blank=True)
+
+    # Timing & Social media
+    time_slot_1 = models.CharField(max_length=225, null=True, blank=True)
+    time_slot_2 = models.CharField(max_length=225, null=True, blank=True)
+    time_slot_3 = models.CharField(max_length=225, null=True, blank=True)
+    social_media = models.JSONField(null=True, blank=True, default=default_blank_fields)
+    service_areas = models.JSONField(null=True, blank=True, default=default_blank_fields)
 
     # Contact details
     telephone = models.CharField(max_length=15, null=True, blank=True)
@@ -223,7 +239,7 @@ class ServiceData(CommonFields):
 
     # Additional Information -  OneToOne Fields from Other Tables
     enable_booking = models.BooleanField(default=False)  # Enable Online Booking
-    gallery = models.OneToOneField(ServiceGallery,  on_delete=models.SET_NULL, null=True, blank=True)
+    gallery = models.OneToOneField(ServiceGallery, on_delete=models.SET_NULL, null=True, blank=True)
     story = models.CharField(max_length=180, null=True, blank=True)  # Link to Blog URL or Blog UUID
 
     def __str__(self):
@@ -247,13 +263,17 @@ def generate_unique_slug(name, location):
 
 # Generate Random slug using temple name and location
 @receiver(pre_save, sender=TempleData)
-def slug_code_gen(sender, instance, **kwargs):
+def temple_code_gen(sender, instance, **kwargs):
     try:
         if not instance.slug:
             instance.slug = generate_unique_slug(instance.name, instance.location)
+        if not instance.created_by:
+            instance.created_by = common_user_id
+
     except:
         if not instance.code:
             instance.code = "ERROR_CODE" + str(time.time_ns())
+            instance.created_by = common_user_id
 
 
 # Generate Random codes using Signals
@@ -262,6 +282,24 @@ def pooja_code_gen(sender, instance, **kwargs):
     try:
         if not instance.code:
             instance.code = generate_random_code()
+        if not instance.created_by:
+            instance.created_by = common_user_id
+
     except:
         if not instance.code:
             instance.code = "ERROR_CODE" + str(time.time_ns())
+            instance.created_by = common_user_id
+
+
+@receiver(pre_save, sender=ServiceData)
+def servcice_code_gen(sender, instance, **kwargs):
+    try:
+        if not instance.slug:
+            instance.slug = generate_unique_slug(instance.name, instance.location)
+        if not instance.created_by:
+            instance.created_by = common_user_id
+
+    except:
+        if not instance.code:
+            instance.code = "ERROR_CODE" + str(time.time_ns())
+            instance.created_by = common_user_id

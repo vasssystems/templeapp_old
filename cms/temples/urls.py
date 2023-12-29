@@ -6,9 +6,9 @@ app_name = "temples"
 
 urlpatterns = [
     path('temple-details/', TempleListCreateAPIView.as_view(), name='temple-details-list-create'),
-    path('temple-details/<uuid:uuid>/', TempleDetailsAPIView.as_view(), name='temple-detailed-view'),
+    path('temple-details/<uuid_slug>/', TempleDetailsAPIView.as_view(), name='temple-detailed-view'),
     path('service-details/', ServiceListCreateAPIView.as_view(), name='service-details-list-create'),
-    path('service-details/<uuid:uuid>/', ServiceDetailsAPIView.as_view(), name='service-detailed-view'),
+    path('service-details/<uuid_slug>/', ServiceDetailsAPIView.as_view(), name='service-detailed-view'),
 
     path('temple-gallery-details/', TempleGalleryListCreateAPIView.as_view(), name='temple-gallery-list-create'),
     path('temple-gallery/<uuid:uuid>/', TempleGalleryDetailsAPIView.as_view(), name='temple-gallery-detailed-view'),
@@ -20,7 +20,9 @@ urlpatterns = [
     path('festivals-details/', FestivalListCreateAPIView.as_view(), name='festivals-details-list-create'),
     path('festivals-details/<uuid:uuid>/', FestivalDetailsAPIView.as_view(), name='festivals-detailed-view'),
     path('blog-details/', BlogListCreateAPIView.as_view(), name='blog-details-list-create'),
-    path('blog-details/<uuid:uuid>/', BlogDetailsAPIView.as_view(), name='blog-detailed-view')
+    path('blog-details/<uuid:uuid>/', BlogDetailsAPIView.as_view(), name='blog-detailed-view'),
+
+    path('dashboard/', DashBoardAPIView.as_view(), name='dashboard-view')
 
 ]
 

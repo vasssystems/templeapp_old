@@ -23,6 +23,22 @@ class IsTechStaff(permissions.BasePermission):
             return False
 
 
+# Allow Get method for Everybody and Allow Post for Only Authenticated Users
+class IsGetOrIsAuthenticated(permissions.BasePermission):
+    def has_permission(self, request, view):
+        logger.info(f"Logged user : {request.user}")
+        filter_param = request.query_params.get('filter')
+        # allow all GET requests
+        if request.method == 'GET':
+            if filter_param == "my_listing":
+                return request.user.is_authenticated
+            return True
+        elif request.user and request.user.is_authenticated:
+            return True
+        else:
+            return False
+
+
 # Allow Get method for All user and Allow Post for Only Authenticated User Roles.
 class IsGetOrIsAdmin(permissions.BasePermission):
     def has_permission(self, request, view):

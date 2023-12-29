@@ -183,6 +183,7 @@ class GetTempleDetailedSerializer(serializers.ModelSerializer):
                   "image", "deity", "deity_list", "landmark", "location", "town",
                   "district", "zipcode", "state", "country", "latitude", "longitude",
                   "map_url", "telephone", "mobile", "email", "website", "slug",
+                  "embedded_url","time_slot_1","time_slot_2","time_slot_3",
                   "acc_number", "ifsc_code", "bank_name", "account_name", "upi_id",
                   "upi_qr", "story", "gallery", "pooja_details", "festivals")
 
@@ -206,6 +207,7 @@ class GetServiceDetailedSerializer(serializers.ModelSerializer):
                   "image", "category", "landmark", "location", "town",
                   "district", "zipcode", "state", "country", "latitude", "longitude",
                   "map_url", "telephone", "mobile", "email", "website", "slug",
+                  "embedded_url", "time_slot_1", "time_slot_2", "time_slot_3",
                   "acc_number", "ifsc_code", "bank_name", "account_name", "upi_id",
                   "upi_qr", "story", "gallery", "enable_booking")
 
