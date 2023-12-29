@@ -26,6 +26,7 @@ def custom_404(request, exception):
 
 class IndexAPIView(APIView):
     def get(self, request):
+        request_user.user = request.user
         response = {
             'success': True,
             'message': 'Welcome to API index',

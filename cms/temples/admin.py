@@ -16,7 +16,7 @@ class TempleResource(resources.ModelResource):
 
 
 class TempleAdmin(ImportExportModelAdmin):
-    readonly_fields = ('uuid',)
+    readonly_fields = ('uuid', 'created_by')
     resource_class = TempleResource
 
 
@@ -27,7 +27,7 @@ class ServiceResource(resources.ModelResource):
 
 
 class ServiceAdmin(ImportExportModelAdmin):
-    readonly_fields = ('uuid',)
+    readonly_fields = ('uuid', 'created_by')
     resource_class = ServiceResource
 
 
@@ -38,7 +38,7 @@ class PoojaResource(resources.ModelResource):
 
 
 class PoojaAdmin(ImportExportModelAdmin):
-    readonly_fields = ('uuid',)
+    readonly_fields = ('uuid', 'created_by')
     resource_class = PoojaResource
 
 
@@ -49,7 +49,7 @@ class FestivalResource(resources.ModelResource):
 
 
 class FestivalAdmin(ImportExportModelAdmin):
-    readonly_fields = ('uuid',)
+    readonly_fields = ('uuid', 'created_by')
     resource_class = FestivalResource
 
 
@@ -60,7 +60,7 @@ class BookingResource(resources.ModelResource):
 
 
 class BookingAdmin(ImportExportModelAdmin):
-    readonly_fields = ('uuid',)
+    readonly_fields = ('uuid', 'created_by')
     resource_class = BookingResource
 
 
@@ -71,7 +71,7 @@ class BlogResource(resources.ModelResource):
 
 
 class BlogAdmin(ImportExportModelAdmin):
-    readonly_fields = ('uuid',)
+    readonly_fields = ('uuid', 'created_by')
     resource_class = BlogResource
 
 

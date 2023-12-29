@@ -189,7 +189,7 @@ def handle_password_reset_token_created(sender, instance, reset_password_token, 
 
 def get_app_url(schema_name):
     if settings.LIVE_MODE:
-        return f"https://app.{settings.API_URL}" if schema_name == "public" else f"https://{schema_name}.{settings.API_URL}"
+        return f"{settings.API_URL}" if schema_name == "public" else f"https://{schema_name}.{settings.API_URL}"
     return settings.APP_URL if settings.APP_URL else "http://localhost:3000/password-reset"
 
 

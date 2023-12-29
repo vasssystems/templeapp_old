@@ -9,6 +9,9 @@ import logging
 logger = logging.getLogger(__name__)
 User = get_user_model()
 
+# Default User id for instance created by value : user -2 : anandvm
+common_user_id = '433714f1-0f09-4363-a51c-9d99a29d88a6'
+
 
 def err_msg(error_data):
     try:
@@ -51,3 +54,6 @@ def create_notification_by_model(user_uuid, title, message):
     except Exception as e:
         logger.error(f" Something went wrong :{e}")
         return None
+
+
+
