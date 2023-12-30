@@ -82,11 +82,11 @@ class TempleDetailsAPIView(CustomResponseMixin, RetrieveUpdateDestroyAPIView):
     serializer_class = TempleSerializer
     # For below permission class, AI Needs to generate a logic for Pass object as instance
     permission_classes = [IsDataOwner]
-    lookup_field = 'lookup'
+    lookup_field = 'uuid'
 
     def retrieve(self, request, *args, **kwargs):
         try:
-            lookup_value = kwargs.get('uuid_slug')  # Get the slug or UUID
+            lookup_value = kwargs.get('uuid')  # Get the slug or UUID
             lookup_field = self.lookup_field
             try:
                 uuid_obj = uuid.UUID(lookup_value)
@@ -115,6 +115,7 @@ class TempleDetailsAPIView(CustomResponseMixin, RetrieveUpdateDestroyAPIView):
 
     def destroy(self, request, *args, **kwargs):
         try:
+            lookup_field = 'uuid'
             instance = self.get_object()
             instance.is_deleted = True
             instance.save()
@@ -183,11 +184,11 @@ class ServiceDetailsAPIView(CustomResponseMixin, RetrieveUpdateDestroyAPIView):
     serializer_class = ServiceSerializer
     # For below permission class, AI Needs to generate a logic for Pass object as instance
     permission_classes = [IsDataOwner, ]
-    lookup_field = 'lookup'
+    lookup_field = 'uuid'
 
     def retrieve(self, request, *args, **kwargs):
         try:
-            lookup_value = kwargs.get('uuid_slug')  # Get the slug or UUID
+            lookup_value = kwargs.get('uuid')  # Get the slug or UUID
             lookup_field = self.lookup_field
             try:
                 uuid_obj = uuid.UUID(lookup_value)
