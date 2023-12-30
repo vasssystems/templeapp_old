@@ -122,6 +122,8 @@ class Wallet(CommonFields):
     code = models.CharField(max_length=225, null=True, blank=True, unique=True)
     txn_type = models.CharField(max_length=25, null=True, choices=wlt_types)
     txn_id = models.CharField(max_length=225, null=True, blank=True)
+    txn_data = models.JSONField(null=True, blank=True)
+    logs = models.JSONField(null=True, blank=True)
 
     def __str__(self):
         return f"Wallet - {self.pk}"
