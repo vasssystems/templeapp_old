@@ -6,9 +6,9 @@ app_name = "temples"
 
 urlpatterns = [
     path('temple-details/', TempleListCreateAPIView.as_view(), name='temple-details-list-create'),
-    path('temple-details/<uuid_slug>/', TempleDetailsAPIView.as_view(), name='temple-detailed-view'),
+    path('temple-details/<str:uuid>/', TempleDetailsAPIView.as_view(), name='temple-detailed-view'),
     path('service-details/', ServiceListCreateAPIView.as_view(), name='service-details-list-create'),
-    path('service-details/<uuid_slug>/', ServiceDetailsAPIView.as_view(), name='service-detailed-view'),
+    path('service-details/<str:uuid>/', ServiceDetailsAPIView.as_view(), name='service-detailed-view'),
 
     path('temple-gallery-details/', TempleGalleryListCreateAPIView.as_view(), name='temple-gallery-list-create'),
     path('temple-gallery/<uuid:uuid>/', TempleGalleryDetailsAPIView.as_view(), name='temple-gallery-detailed-view'),

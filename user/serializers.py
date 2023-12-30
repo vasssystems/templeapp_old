@@ -78,7 +78,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('id', 'uuid', 'first_name', 'last_name', 'email', 'username',
-                  'department_id', 'designation', 'mobile_number',
+                  'department_id', 'designation', 'mobile_number', 'referred_by',
                   'email_verified', 'mobile_verified', 'wallet_balance')
 
 
