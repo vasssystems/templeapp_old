@@ -118,8 +118,8 @@ class WalletSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wallet
         fields = ('id', 'uuid', 'user', 'points', 'remarks', 'from_user',
-                  'txn_type', 'txn_id', 'code', 'created_at',
-                  'created_by', 'updated_by')
+                  'txn_type', 'txn_id', 'code', 'created_at', 'txn_data',
+                  'logs', 'created_by', 'updated_by')
 
     def create(self, validated_data):
         validated_data['created_by'] = str(self.context['request'].user.uuid)
@@ -128,5 +128,3 @@ class WalletSerializer(serializers.ModelSerializer):
         validated_data['from_user'] = "SYSTEM"
         validated_data['txn_type'] = "DR"
         return super().create(validated_data)
-
-
