@@ -192,7 +192,7 @@ class GetTempleDetailedSerializer(serializers.ModelSerializer):
                   "map_url", "telephone", "mobile", "email", "website", "slug",
                   "embedded_url", "time_slot_1", "time_slot_2", "time_slot_3",
                   "acc_number", "ifsc_code", "bank_name", "account_name", "upi_id",
-                  "upi_qr", "story", "gallery", "pooja_details", "festivals")
+                  "upi_qr", "story", "gallery", "pooja_details", "festivals", "social_media")
 
     def get_festivals(self, tmp):
         festival_obj = Festivals.objects.filter(is_deleted=False, status=True, temple_uuid=str(tmp.uuid)).order_by("id")
@@ -220,7 +220,7 @@ class GetServiceDetailedSerializer(serializers.ModelSerializer):
                   "map_url", "telephone", "mobile", "email", "website", "slug",
                   "embedded_url", "time_slot_1", "time_slot_2", "time_slot_3",
                   "acc_number", "ifsc_code", "bank_name", "account_name", "upi_id",
-                  "upi_qr", "story", "gallery", "enable_booking")
+                  "upi_qr", "story", "gallery", "enable_booking", "social_media")
 
     def get_gallery(self, obj):
         gallery_obj = ServiceGallery.objects.filter(is_deleted=False, status=True, service_uuid=obj.uuid).order_by("id")
