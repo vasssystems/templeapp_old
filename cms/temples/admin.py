@@ -75,6 +75,26 @@ class BlogAdmin(ImportExportModelAdmin):
     resource_class = BlogResource
 
 
+class TempGalleryResource(resources.ModelResource):
+    class Meta:
+        model = TempleGallery
+
+
+class TempleGalleryAdmin(ImportExportModelAdmin):
+    readonly_fields = ('uuid', 'created_by')
+    resource_class = TempGalleryResource
+
+
+class ServiceGalleryResource(resources.ModelResource):
+    class Meta:
+        model = ServiceGallery
+
+
+class ServiceGalleryAdmin(ImportExportModelAdmin):
+    readonly_fields = ('uuid', 'created_by')
+    resource_class = ServiceGalleryResource
+
+
 # Register your models here.
 admin.site.register(TempleData, TempleAdmin)
 admin.site.register(ServiceData, ServiceAdmin)
@@ -82,5 +102,5 @@ admin.site.register(Poojas, PoojaAdmin)
 admin.site.register(Festivals, FestivalAdmin)
 admin.site.register(Bookings, BookingAdmin)
 admin.site.register(Blog, BlogAdmin)
-admin.site.register(TempleGallery)
-admin.site.register(ServiceGallery)
+admin.site.register(TempleGallery, TempleGalleryAdmin)
+admin.site.register(ServiceGallery, ServiceGalleryAdmin)

@@ -215,7 +215,7 @@ class GetServiceDetailedSerializer(serializers.ModelSerializer):
         model = ServiceData
         fields = ("id", "created_by", "updated_by", "uuid", "status",
                   "created_at", "updated_at", "name", "subtitle", "description",
-                  "image", "category", "landmark", "location", "town",
+                  "image", "category", "landmark", "location", "town","service_areas",
                   "district", "zipcode", "state", "country", "latitude", "longitude",
                   "map_url", "telephone", "mobile", "email", "website", "slug",
                   "embedded_url", "time_slot_1", "time_slot_2", "time_slot_3",
