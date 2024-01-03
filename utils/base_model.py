@@ -3,7 +3,6 @@ import uuid
 from django.db import models
 
 
-
 class CommonFields(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     status = models.BooleanField(default=True)
@@ -15,6 +14,3 @@ class CommonFields(models.Model):
 
     class Meta:
         abstract = True  # Making this model abstract to avoid database table creation
-
-
-

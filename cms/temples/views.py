@@ -41,6 +41,9 @@ class TempleListCreateAPIView(CustomResponseMixin, ListCreateAPIView):
             user_uuid = str(self.request.user.uuid)
             return queryset.filter(created_by=user_uuid)
 
+        elif filter_param == 'public_listing':
+            return queryset.filter(status=True)
+
         elif filter_field and filter_value:
             filter_args = {filter_field: filter_value}
             return queryset.filter(**filter_args)
@@ -142,6 +145,9 @@ class ServiceListCreateAPIView(CustomResponseMixin, ListCreateAPIView):
         if filter_param == 'my_listing':
             user_uuid = str(self.request.user.uuid)
             return queryset.filter(created_by=user_uuid)
+
+        elif filter_param == 'public_listing':
+            return queryset.filter(status=True)
 
         elif filter_field and filter_value:
             filter_args = {filter_field: filter_value}
