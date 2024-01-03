@@ -209,7 +209,10 @@ class WalletListCreateAPIView(CustomResponseMixin, ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Wallet.objects.filter(user=user, is_deleted=False).order_by('-id')
+        if user.user_scope in ("1" or "2" or "3"):
+            queryset = Wallet.objects.filter(is_deleted=False).order_by('-id')
+        else:
+            queryset = Wallet.objects.filter(user=user, is_deleted=False).order_by('-id')
         return queryset
 
     def list(self, request, *args, **kwargs):
