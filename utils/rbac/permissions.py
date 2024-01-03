@@ -111,7 +111,7 @@ class IsDataOwner(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         index_id = view.kwargs
         try:
-            user_scope = request.user.user_scope
+            user_scope = request.user.user_scope if request.user.is_authenticated else None
             if request.method == 'GET':
                 return True
             elif user_scope in ("1", "2", "3"):
