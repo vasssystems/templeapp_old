@@ -94,7 +94,7 @@ class UserLoginView(generics.GenericAPIView):
             username = user_obj.username
             user = authenticate(username=username, password=password)
 
-            if user:
+            if user and user.status:
                 user_token = RefreshToken.for_user(user)
                 update_last_login(None, user)
 
@@ -298,6 +298,27 @@ class WalletAdminListAPIView(CustomResponseMixin, ListCreateAPIView):
 
             serializer = self.get_serializer(queryset, many=True)
             return self.success_response("Retrieved successfully", serializer.data)
+        except Exception as e:
+            return self.bad_request_response("Something went wrong !", err_msg(e))
+
+    def create(self, request, *args, **kwargs):
+        try:
+            # Check if the user has enough balance for withdrawal
+            txn_id = request.data.get('txn_id')
+            txn_data = request.data.get('txn_data')
+            txn_uuid = request.data.get('uuid')
+            res_data = {}
+            if txn_uuid:
+                txn_uuid = str(txn_uuid)
+                object_ = Wallet.objects.filter(is_deleted=False, uuid=txn_uuid).first()
+                if not object_:
+                    return self.bad_request_response("Something went wrong !", err_msg("No transactions found"))
+                object_.txn_id = txn_id
+                object_.txn_data = txn_data
+                object_.updated_by = str(request.user.uuid)
+                object_.save()
+                res_data = {"id": str(object_.id), "uuid": str(object_.uuid), "txn_id": str(object_.txn_id), "txn_data": object_.txn_data}
+            return self.created_response("Successfully Updated", res_data)
         except Exception as e:
             return self.bad_request_response("Something went wrong !", err_msg(e))
 
