@@ -82,7 +82,7 @@ class IsPortalManager(permissions.BasePermission):
         index_id = view.kwargs
         try:
             user_scope = request.user.user_scope
-            if user_scope in ("2" or "3"):
+            if user_scope in ("1", "2", "3"):
                 return True
             else:
                 return False

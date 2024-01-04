@@ -17,6 +17,7 @@ urlpatterns = [
     path('profile/', views.UserProfileView.as_view(), name='user-profile'),
     path('change-password/', views.ChangePasswordView.as_view(), name='change-password'),
     path('wallet/', views.WalletListCreateAPIView.as_view(), name='user-wallet'),
+    path('wallet/admin', views.WalletAdminListAPIView.as_view(), name='admin-wallet'),
     # Admin API endpoints
     path('view-users/', views.UserListCreateAPIView.as_view(), name='view-users'),
     path('view-users/<uuid:uuid>/', views.UserRetrieveUpdateDestroyAPIView.as_view(), name='view-user'),
