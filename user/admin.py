@@ -56,7 +56,7 @@ class WalletResource(resources.ModelResource):
 
 
 class WalletAdmin(ImportExportModelAdmin):
-    readonly_fields = ('uuid', 'from_user', 'user', 'txn_type', 'code', 'points', 'created_by')
+    readonly_fields = ('uuid', 'user', 'from_user', 'txn_type', 'code', 'points', 'created_by')
     resource_class = WalletResource
 
 

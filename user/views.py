@@ -154,8 +154,6 @@ class ChangePasswordView(APIView):
             return Response(res_data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-
-
 class UserProfileView(RetrieveUpdateAPIView):
     serializer_class = UserProfileSerializer
     permission_classes = [IsAuthenticated]
@@ -209,10 +207,7 @@ class WalletListCreateAPIView(CustomResponseMixin, ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        if user.user_scope in ("1" or "2" or "3"):
-            queryset = Wallet.objects.filter(is_deleted=False).order_by('-id')
-        else:
-            queryset = Wallet.objects.filter(user=user, is_deleted=False).order_by('-id')
+        queryset = Wallet.objects.filter(user=user, is_deleted=False).order_by('-id')
         return queryset
 
     def list(self, request, *args, **kwargs):
@@ -265,6 +260,46 @@ class WalletListCreateAPIView(CustomResponseMixin, ListCreateAPIView):
 """
 Admin app APIs are listed below
 """
+
+
+# Admin Can view ll wallet Transactions
+class WalletAdminListAPIView(CustomResponseMixin, ListCreateAPIView):
+    serializer_class = WalletSerializer
+    pagination_class = LimitOffsetPagination
+    filter_backends = [SearchFilter]
+    search_fields = ['user', 'code', 'uuid']  # Add fields to search for
+
+    permission_classes = [IsPortalManager, ]
+
+    def get_queryset(self):
+        queryset = Wallet.objects.filter(is_deleted=False).order_by('-id')
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        try:
+            queryset = self.filter_queryset(self.get_queryset())
+            filter_field = self.request.query_params.get('filter_field')  # Get the dynamic filter field
+            filter_value = self.request.query_params.get('filter_value')  # Get the filter value
+
+            if filter_field and filter_value:
+                filter_args = {filter_field: filter_value}
+                queryset = queryset.filter(**filter_args)
+            page = self.paginate_queryset(queryset)
+
+            if page is not None:
+                serializer = self.get_serializer(page, many=True)
+                res_data = {
+                    'count': self.paginator.count,
+                    'next': self.paginator.get_next_link(),
+                    'previous': self.paginator.get_previous_link(),
+                    'results': serializer.data
+                }
+                return self.success_response("Retrieved successfully", res_data)
+
+            serializer = self.get_serializer(queryset, many=True)
+            return self.success_response("Retrieved successfully", serializer.data)
+        except Exception as e:
+            return self.bad_request_response("Something went wrong !", err_msg(e))
 
 
 # Admin can list and create new users

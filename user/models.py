@@ -131,7 +131,6 @@ class Wallet(CommonFields):
 
 # Generate Random codes using Signals
 
-
 # Function to Update referral Points
 def add_referral_pont(obj):
     try:
