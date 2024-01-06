@@ -33,6 +33,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         if existing_obj:
             username = generate_random_code()
         validated_data['username'] = username  # Assign the generated username to the data
+        validated_data['status'] = True
         return User.objects.create_user(**validated_data)
 
 
