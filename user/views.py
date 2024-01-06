@@ -151,7 +151,7 @@ class ChangePasswordView(APIView):
         except Exception as ex:
             logger.error(ex)
             res_data = {'success': False, "message": 'Some thing went wrong', 'data': err_msg(ex)}
-            return Response(res_data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(res_data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserProfileView(RetrieveUpdateAPIView):

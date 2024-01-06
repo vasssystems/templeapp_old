@@ -63,7 +63,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     user_permissions = models.ManyToManyField(Permission, blank=True, related_name="custom_users_permissions")
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)  # Common UUID field for all models with autogenerate
-    status = models.BooleanField(default=False)  # Common Status field for check active or disabled status of object
+    status = models.BooleanField(default=True)  # Common Status field for check active or disabled status of object
     is_deleted = models.BooleanField(default=False)  # Soft delete field
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now_add=True, null=True)
