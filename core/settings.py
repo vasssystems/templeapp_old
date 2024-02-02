@@ -91,8 +91,8 @@ USE_S3 = config('USE_S3', default=False, cast=bool)
 USE_EMAIL = config('USE_EMAIL', default=False, cast=bool)
 LIVE_MODE = config('LIVE_MODE', default=False, cast=bool)
 BASE_URL = config('BASE_URL', default="http://localhost:8000")
-APP_URL = config('APP_URL',  default="https://app.templeaddress.com")
-API_URL = config('API_URL', default="https://api.templeaddress.com")
+APP_URL = config('APP_URL',  default="https://app.templesaddress.com")
+API_URL = config('API_URL', default="https://api.templesaddress.com")
 
 if USE_DB:
     DATABASES = {
@@ -295,12 +295,12 @@ ALLOWED_HOSTS = ['*']
 
 # Additional settings on production to avoid CSRF forbidden issues on live with HTTPS
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-CSRF_TRUSTED_ORIGINS = ('https://*.templeaddress.com', 'http://*.templeaddress.com', 'https://templeaddress.com',
+CSRF_TRUSTED_ORIGINS = ('https://*.templesaddress.com', 'http://*.templesaddress.com', 'https://templesaddress.com',
                         'http://*.vercel.app', 'https://*.vercel.app', 'http://localhost:3000', 'https://*.now.sh')
 
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000', 'http://*.localhost', 'http://*.vercel.app', 'http://*.templeaddress.com',
-    'https://*.templeaddress.com', 'https://*.vercel.app', 'https://*.now.sh')
+    'http://localhost:3000', 'http://*.localhost', 'http://*.vercel.app', 'http://*.templesaddress.com',
+    'https://*.templesaddress.com', 'https://*.vercel.app', 'https://*.now.sh')
 
 MAX_UPLOAD_SIZE = "5242880"
 FILE_UPLOAD_MAX_MEMORY_SIZE = 9621440
